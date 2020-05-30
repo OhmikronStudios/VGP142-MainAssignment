@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ReturnToMenu();
+            QuitGame();
         }
     }
 
@@ -46,7 +46,13 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Debug.Log("quit application");
-        Application.Quit();
+    #if UNITY_EDITOR
+            // Application.Quit() does not work in the editor so
+            // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
+            UnityEditor.EditorApplication.isPlaying = false;
+    #else
+             Application.Quit();
+    #endif
     }
     public void ReturnToMenu()
     {

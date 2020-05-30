@@ -819,7 +819,11 @@ MonoBehaviour:
 
     Jump - Space
 
-    Throw Kunai - Left Click'
+    Throw Kunai - Left Click
+
+
+    Press
+    Esc to Quit Game at any time'
 --- !u!222 &1827912988
 CanvasRenderer:
   m_ObjectHideFlags: 0
