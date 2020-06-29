@@ -7,6 +7,11 @@ TagManager:
   - Water
   - Projectile
   - Rock
+  - Pickup_Speed
+  - Pickup_Ammo
+  - Pickup_Health
+  - Pickup_Win
+  - PathNode
   layers:
   - Default
   - TransparentFX

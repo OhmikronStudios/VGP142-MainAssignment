@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     Animator anim;
     //Rigidbody rb;
 
-        //Movement Parameters
+    //Movement Parameters
     public float speed = 10.0f;
     public float jumpSpeed = 8.0f;
     public float rotationSpeed = 5.0f;
@@ -20,13 +20,17 @@ public class Player : MonoBehaviour
     //Gameplay Parameters
     [SerializeField] int health = 100;
     [SerializeField] Slider healthBar;
-
+    public int ammo = 10;
+    
+    
     //Objects
     [SerializeField] GameObject kunai;
     [SerializeField] GameObject kunaiSpawn;
 
-    
-    
+
+   
+
+
     // Setting type to 0 means use SimpleMove()
     // Setting type to 1 means use Move()
     [SerializeField] int type = 1;
@@ -76,6 +80,7 @@ public class Player : MonoBehaviour
 
         catch (ArgumentNullException e)
         { Debug.LogWarning(e.Message); }
+        SetMaxHealth(health);
     }
 
     // Update is called once per frame
@@ -108,7 +113,11 @@ public class Player : MonoBehaviour
         { Kick(); }
         if (Input.GetButtonDown("Fire1"))
         {
-            anim.SetTrigger("Throw");
+            if (ammo > 0)
+            {
+                ammo -= 1;
+                anim.SetTrigger("Throw");
+            }
             //Firekunai();
         }
 
@@ -190,7 +199,62 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        //Debug.Log("OnCollisionEnter with: " + hit.gameObject.name);
+        switch (hit.gameObject.tag)
+        {
+            case "Pickup_Speed":
+                StartCoroutine(SpeedBoost());
+                Destroy(hit.gameObject);
+                break;
+            case "Pickup_Ammo":
+                GainAmmo(5);
+                Destroy(hit.gameObject);
+                break;
+            case "Pickup_Health":
+                GainHealth(25);
+                Destroy(hit.gameObject);
+                break;
+            case "Pickup_Win":
+                Win();
+                Destroy(hit.gameObject);
+                break;
+        }
 
+    }
+    
+    //Pickup Effects
+    IEnumerator SpeedBoost()
+    {
+        speed *= 2;
+        jumpSpeed *= 2;
+        yield return new WaitForSeconds(10.0f);
+        speed /= 2;
+        jumpSpeed /= 2;
+    }
+
+    void GainAmmo(int a)
+    {
+        ammo += a;
+        Debug.Log("Ammo is at: " + ammo);    
+    }
+
+    void GainHealth(int h)
+    {
+        health += h;
+        if (health > 100)
+        {
+            health = 100;
+            Debug.Log("health is at: " + health);
+        }
+        Debug.Log("health is at: " + health);
+    }
+
+    void Win()
+    {
+
+    }
 
 }
 
