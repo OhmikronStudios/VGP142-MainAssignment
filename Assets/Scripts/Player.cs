@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     CharacterController cc;
     Animator anim;
+    [SerializeField] Text kunaiCounter;
     //Rigidbody rb;
 
     //Movement Parameters
@@ -101,6 +102,7 @@ public class Player : MonoBehaviour
         }
 
         SetHealth(health);
+        SetKunai();
 
 
     }
@@ -187,6 +189,10 @@ public class Player : MonoBehaviour
     void SetHealth(int health)
     {
         healthBar.value = health;
+    } 
+    void SetKunai()
+    {
+        kunaiCounter.text = ammo.ToString();
     }
 
     public void TakeDamage(int damage)
@@ -253,7 +259,7 @@ public class Player : MonoBehaviour
 
     void Win()
     {
-
+        FindObjectOfType<GameManager>().LoadWinScreen();
     }
 
 }
